@@ -1,5 +1,6 @@
 package(default_visibility = ["//visibility:public"])
 
+load("//tools/ts-api-guardian:index.bzl", "ts_api_guardian_test")
 load("//tools:defaults.bzl", "pkg_npm", "ts_library")
 load("@npm_bazel_typescript//:index.bzl", "ts_config")
 
@@ -58,4 +59,14 @@ pkg_npm(
         ":compiler-cli",
         "//packages/compiler-cli/ngcc",
     ],
+)
+
+ts_api_guardian_test(
+    name = "error_code_api",
+    actual = "packages/compiler-cli/src/ngtsc/diagnostics/src/error_code.d.ts",
+    data = [
+        "//goldens:public-api",
+        "//packages/compiler-cli/src/ngtsc/diagnostics",
+    ],
+    golden = "goldens/public-api/compiler-cli/error_code.d.ts",
 )
